@@ -1,0 +1,622 @@
+#include<simplecpp>
+void chainReact(int (&G)[9][6],int (&P)[9][6],int x,int y,int p){
+            if(p%2==0){
+          if(x==0&&y==0){
+                if(G[x][y]<1){
+
+                    P[x][y]=1;
+
+                    G[x][y]++;
+
+                }
+ 
+               else{
+ 
+                    P[x+1][y]=1;G[x+1][y]=abs(G[x+1][y]);
+
+                     P[x][y+1]=1;G[x][y+1]=abs(G[x][y+1]);
+
+                    G[x][y]=0; P[x][y]=0;
+
+                    chainReact(G,P,x+1,y,p);
+
+                    chainReact(G,P,x,y+1,p);
+
+                }
+
+            }
+
+           else if(x==0&&y==5){
+
+                if(G[x][y]<1){
+
+                    P[x][y]=1;
+
+                    G[x][y]++;
+
+                }
+ 
+               else{
+
+                     P[x+1][y]=1;G[x+1][y]=abs(G[x+1][y]);
+ 
+                    P[x][y-1]=1;G[x][y-1]=abs(G[x][y-1]);
+
+                    G[x][y]=0;   P[x][y]=0;
+ 
+                   chainReact(G,P,x+1,y,p);
+
+                    chainReact(G,P,x,y-1,p);
+
+                }
+ 
+           }
+           else if(x==8&&y==0){
+
+                if(G[x][y]<1){
+ 
+                   P[x][y]=1;
+
+                    G[x][y]++;
+
+                }
+
+                else{
+
+                     P[x-1][y]=1;G[x-1][y]=abs(G[x-1][y]);
+
+                     P[x][y+1]=1;G[x][y+1]=abs(G[x][y+1]);
+ 
+                   G[x][y]=0;   P[x][y]=0;
+ 
+                   chainReact(G,P,x-1,y,p);
+
+                    chainReact(G,P,x,y+1,p);
+
+                }
+ 
+           }
+ 
+          else if(x==8&&y==5){
+
+                if(G[x][y]<1){
+
+                    P[x][y]=1;
+
+                    G[x][y]++;
+
+                }
+
+                else{
+ 
+                    P[x-1][y]=1;G[x-1][y]=abs(G[x-1][y]);
+
+                     P[x][y-1]=1;G[x][y-1]=abs(G[x][y-1]);
+
+                    G[x][y]=0;   P[x][y]=0;
+
+                    chainReact(G,P,x-1,y,p);
+
+                    chainReact(G,P,x,y-1,p);
+
+                }
+
+            }
+
+            else if(x==0){
+ 
+               if(G[x][y]<2){
+
+                    G[x][y]++; P[x][y]=1;
+
+                }
+
+                else{
+
+                     P[x+1][y]=1;G[x+1][y]=abs(G[x+1][y]);
+
+                     P[x][y+1]=1;G[x][y+1]=abs(G[x][y+1]);
+
+                     P[x][y-1]=1;G[x][y-1]=abs(G[x][y-1]);
+
+                    G[x][y]=0;   P[x][y]=0;
+ 
+                   chainReact(G,P,x+1,y,p);
+
+                    chainReact(G,P,x,y-1,p);
+
+                    chainReact(G,P,x,y+1,p);
+
+                }
+
+            }
+ 
+           else if(x==8){
+
+                if(G[x][y]<2){
+ 
+                   G[x][y]++; P[x][y]=1;
+
+                }
+
+                else{
+
+                     P[x-1][y]=1;G[x-1][y]=abs(G[x-1][y]);
+
+                     P[x][y+1]=1;G[x][y+1]=abs(G[x][y+1]);
+ 
+                    P[x][y-1]=1;G[x][y-1]=abs(G[x][y-1]);
+
+                    G[x][y]=0;   P[x][y]=0;
+
+                    chainReact(G,P,x-1,y,p);
+
+                    chainReact(G,P,x,y-1,p);
+
+                    chainReact(G,P,x,y+1,p);
+
+                }
+
+            }
+
+            else if(y==0){
+
+                if(G[x][y]<2){
+
+                    G[x][y]++; P[x][y]=1;
+
+                }
+ 
+               else{
+
+                     P[x-1][y]=1;G[x-1][y]=abs(G[x-1][y]);
+
+                     P[x][y+1]=1;G[x][y+1]=abs(G[x][y+1]);
+
+                     P[x+1][y]=1;G[x+1][y]=abs(G[x+1][y]);
+
+                    G[x][y]=0;   P[x][y]=0;
+
+                    chainReact(G,P,x+1,y,p);
+
+                    chainReact(G,P,x,y+1,p);
+
+                    chainReact(G,P,x-1,y,p);
+
+                }
+            }
+
+            else if(y==5){
+ 
+               if(G[x][y]<2){
+
+                    G[x][y]++; P[x][y]=1;
+
+                }
+
+                else{
+
+                     P[x+1][y]=1;G[x+1][y]=abs(G[x+1][y]);
+
+                     P[x-1][y]=1;G[x-1][y]=abs(G[x-1][y]);
+
+                     P[x][y-1]=1;G[x][y-1]=abs(G[x][y-1]);
+ 
+                   G[x][y]=0;   P[x][y]=0;
+
+                    chainReact(G,P,x+1,y,p);
+ 
+                   chainReact(G,P,x,y-1,p);
+ 
+                   chainReact(G,P,x-1,y,p);
+ 
+               }
+            }
+ 
+           else {
+
+                if(G[x][y]<3){
+
+                    G[x][y]++;P[x][y]=1;
+
+                }
+
+                else {
+
+                    P[x+1][y]=1;G[x+1][y]=abs(G[x+1][y]);
+ 
+                    P[x-1][y]=1;G[x-1][y]=abs(G[x-1][y]);
+
+                    P[x][y+1]=1;G[x][y+1]=abs(G[x][y+1]);
+
+                     P[x][y-1]=1;G[x][y-1]=abs(G[x][y-1]);
+
+                       G[x][y]=0;P[x][y]=0;
+
+                    chainReact(G,P,x+1,y,p);
+
+                    chainReact(G,P,x-1,y,p);
+
+                    chainReact(G,P,x,y-1,p);
+ 
+                   chainReact(G,P,x,y+1,p);
+
+                }
+            }
+        }
+
+    else if(p%2==1){
+ 
+           if(x==0&&y==0){
+ 
+               if(G[x][y]<1){
+
+                    P[x][y]=2;
+
+                    G[x][y]--;
+ 
+               }
+ 
+               else{
+ 
+                    P[x+1][y]=2;G[x+1][y]=-abs(G[x+1][y]);
+ 
+                    P[x][y+1]=2;G[x][y+1]=-abs(G[x][y+1]);
+
+                    G[x][y]=0;   P[x][y]=0;
+ 
+                   chainReact(G,P,x+1,y,p);
+ 
+                   chainReact(G,P,x,y+1,p);
+
+                }
+            }
+ 
+          else if(x==0&&y==8){
+
+                if(G[x][y]<1){
+
+                    P[x][y]=2;
+ 
+                   G[x][y]--;
+
+                }
+
+                else{
+
+                     P[x+1][y]=2;G[x+1][y]=-abs(G[x+1][y]);
+
+                     P[x][y-1]=2;G[x][y-1]=-abs(G[x][y-1]);
+
+                    G[x][y]=0;   P[x][y]=0;
+ 
+                   chainReact(G,P,x+1,y,p);
+
+                    chainReact(G,P,x,y-1,p);
+
+                }
+            }
+
+           else if(x==8&&y==0){
+ 
+               if(G[x][y]<1){
+
+                    P[x][y]=2;
+
+                    G[x][y]--;
+
+                }
+ 
+               else{
+ 
+                    P[x-1][y]=2;G[x-1][y]=-abs(G[x-1][y]);
+
+                    P[x][y+1]=2;G[x][y+1]=-abs(G[x][y+1]);
+
+                    G[x][y]=0;   P[x][y]=0;
+
+                    chainReact(G,P,x-1,y,p);
+
+                    chainReact(G,P,x,y+1,p);
+
+                }
+            }
+
+           else if(x==8&&y==5){
+
+
+                if(G[x][y]<1){
+
+                    P[x][y]=2;
+
+                    G[x][y]--;
+
+                }
+
+                else{
+
+                     P[x-1][y]=2;G[x-1][y]=-abs(G[x-1][y]);
+
+                     P[x][y-1]=2;G[x][y-1]=-abs(G[x][y-1]);
+
+                    G[x][y]=0;   P[x][y]=0;
+
+                    chainReact(G,P,x-1,y,p);
+ 
+                    chainReact(G,P,x,y-1,p);
+
+                }
+            }
+
+            else if(x==0){
+
+                if(G[x][y]<2){
+ 
+                   G[x][y]--; P[x][y]=2;
+
+                }
+ 
+               else{
+ 
+                    P[x+1][y]=2;G[x+1][y]=-abs(G[x+1][y]);
+
+                     P[x][y+1]=2;G[x][y+1]=-abs(G[x][y+1]);
+
+                     P[x][y-1]=2;G[x][y-1]=-abs(G[x][y-1]);
+
+                    G[x][y]=0;   P[x][y]=0;
+
+                    chainReact(G,P,x+1,y,p);
+
+                    chainReact(G,P,x,y-1,p);
+
+                    chainReact(G,P,x,y+1,p);
+
+                }
+            }
+
+            else if(x==8){
+
+                if(G[x][y]<2){
+
+                    G[x][y]--; P[x][y]=2;
+
+                }
+ 
+               else{
+ 
+                    P[x-1][y]=2;G[x-1][y]=-abs(G[x-1][y]);
+
+                     P[x][y+1]=2;G[x][y+1]=-abs(G[x][y+1]);
+
+                     P[x][y-1]=2;G[x][y-1]=-abs(G[x][y-1]);
+
+                    G[x][y]=0;   P[x][y]=0;
+
+                    chainReact(G,P,x-1,y,p);
+
+                    chainReact(G,P,x,y-1,p);
+
+                    chainReact(G,P,x,y+1,p);
+
+                }
+            }
+
+            else if(y==0){
+
+                if(G[x][y]<2){
+ 
+                   G[x][y]--; P[x][y]=2;
+ 
+               }
+ 
+               else{
+
+                    P[x-1][y]=2;G[x-1][y]=-abs(G[x-1][y]);
+
+                     P[x][y+1]=2;G[x][y+1]=-abs(G[x][y+1]);
+
+                     P[x+1][y]=2;G[x+1][y]=-abs(G[x+1][y]);
+
+                    G[x][y]=0;   P[x][y]=0;
+
+                    chainReact(G,P,x+1,y,p);
+
+                    chainReact(G,P,x,y+1,p);
+
+                    chainReact(G,P,x-1,y,p);
+
+                }
+            }
+
+            else if(y==5){
+
+                if(G[x][y]<2){
+
+                    G[x][y]--; P[x][y]=2;
+
+                }
+
+                else{
+
+                    P[x+1][y]=2;G[x+1][y]=-abs(G[x+1][y]);
+
+                    P[x-1][y]=2;G[x-1][y]=-abs(G[x-1][y]);
+
+                    P[x][y-1]=2;G[x][y-1]=-abs(G[x][y-1]);
+
+                    G[x][y]=0;   P[x][y]=0;
+
+                    chainReact(G,P,x+1,y,p);
+ 
+                   chainReact(G,P,x,y-1,p);
+
+                    chainReact(G,P,x-1,y,p);
+
+                }
+            }
+
+            else {
+
+                if(G[x][y]<3){
+
+                    G[x][y]--;P[x][y]=2;
+
+                }
+
+                else {
+ 
+                  P[x+1][y]=2;G[x+1][y]=-abs(G[x+1][y]);
+
+                     P[x-1][y]=2;G[x-1][y]=-abs(G[x-1][y]);
+
+                     P[x][y+1]=2;G[x][y+1]=-abs(G[x][y+1]);
+
+                    P[x][y-1]=2;G[x][y-1]=-abs(G[x][y-1]);
+ 
+                      G[x][y]=0;P[x][y]=0;
+
+                    chainReact(G,P,x+1,y,p);
+
+                    chainReact(G,P,x-1,y,p);
+
+                    chainReact(G,P,x,y-1,p);
+
+                    chainReact(G,P,x,y+1,p);
+
+                }
+ 
+           }
+ 
+         }
+ 
+       }
+
+main_program{
+
+    int G[9][6],P[9][6];  //G keeps track of no. of orbs,P keeps track of colour of orbs.
+    
+for(int i=0;i<9;i++){
+       
+        for(int j=0;j<6;j++){
+ 
+           G[i][j]=0;
+
+            P[i][j]=0;
+
+        }
+    } 
+                
+    int x,y,p=0;      //p keeps track of player's turn
+   
+ while(cin>>x>>y){
+
+        if(x!=-1){
+
+            if(p%2==0){
+ 
+                 if(P[x][y]==2){
+
+        cout<<"Illegal move"<<endl;
+
+                  }
+
+                   else { 
+
+               chainReact(G,P,x,y,p);
+
+               p++;
+ 
+              for(int i=0;i<9;i++){
+
+                   for(int j=0;j<6;j++){
+
+                       cout<<G[i][j]<<" ";
+
+                   }
+
+                   cout<<endl;
+
+               }
+ 
+          }
+ 
+              }
+
+               else if(p%2==1){
+
+                   if(P[x][y]==1){
+
+                   cout<<"Illegal move"<<endl;
+
+                   }
+
+                    else {
+ 
+               chainReact(G,P,x,y,p);
+
+               p++;
+
+               for(int i=0;i<9;i++){
+
+                   for(int j=0;j<6;j++){
+
+                       cout<<G[i][j]<<" ";
+
+                   }
+
+                   cout<<endl;
+
+               }
+
+           }
+
+               }
+
+           cout<<endl;
+           if(abs(G[0][0])==1&&
+           abs(G[0][5])==1&&
+           abs(G[8][0])==1&&
+           abs(G[8][5])==1&&
+abs(G[0][1])==2&&abs(G[0][2])==2&&abs(G[0][3])==2&&abs(G[0][4])==2&&
+abs(G[8][1])==2&&abs(G[8][2])==2&&abs(G[8][3])==2&&abs(G[8][4])==2&&
+abs(G[1][0])==2&&abs(G[2][0])==2&&abs(G[3][0])==2&&abs(G[4][0])==2&&
+abs(G[5][0])==2&&abs(G[6][0])==2&&abs(G[7][0])==2&&         
+abs(G[1][5])==2&&abs(G[2][5])==2&&abs(G[3][5])==2&&abs(G[4][5])==2)
+    {
+               repeat(9){
+               cout<<"0 1 1 1 1 1"<<endl;
+               }
+               break;
+           }
+
+           if(p>2){
+ 
+              bool x=true;
+              if(P[0][0]==1){
+                  for(int i=0;i<9;i++){
+                      for(int j=0;j<6;j++){
+                           if(P[i][j]!=1){
+                               x=false;
+                               break;
+                         }
+                      }
+                   }
+                   if(x) break;
+               }
+               else if(P[0][0]==2){
+                   for(int i=0;i<9;i++){
+                       for(int j=0;j<6;j++){
+                           if(P[i][j]!=2){
+                               x=false;
+                               break;
+                           }
+                      }
+                  }
+                   if(x) break;
+               }
+           }
+        }
+        else break;
+    }
+}
