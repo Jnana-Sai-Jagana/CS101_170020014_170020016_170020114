@@ -1,0 +1,363 @@
+#include <simplecpp>
+int n ;
+vector <int> step1;
+vector <int> :: iterator is;
+
+struct pos0 {
+int x ; int y ;
+
+void find0 (short **arr)
+{
+for(int i=0 ; i<n; i++)
+for(int j =0 ; j< n; j++)
+if(arr[i][j]==0 )
+{x= i ;
+ y = j ;
+}
+}} ;
+
+pos0 pos ;
+
+int possible[4] ;
+
+int rank1 ( short ** arr )
+{
+int count = 0 ;
+
+for (int i =0 ; i<n ; i++)
+{
+for (int j = 0 ; j<n ; j++)
+{
+ int c ;
+ c = (arr[i][j]!=0)*abs(arr[i][j]- n*i-j-1 ) ;
+ count += c/n + c%n  ;
+ //cout<<count ;
+}}
+return count ;
+}
+
+
+struct mat
+{
+//int arr[3][3] ;
+mat* parent ;
+short** arr;
+int depth;
+int fval ;
+char step ;
+mat()
+    {   //cout<<n ;
+        arr= new short* [n];
+        for (int i = 0; i <n ; i++)
+        {
+            arr[i] = new short [n];
+        }
+        step = 0 ;
+    }
+mat( mat* parent1 ,short** arr1 , int depth1, char step1)
+{
+ parent=parent1 ;
+ arr=arr1;
+ depth=depth1;
+ fval= depth1 + rank1(arr) ;
+ step = step1 ;
+}
+    };
+
+
+
+struct collect
+{
+mat op[60000];
+mat clo[40000] ;
+int opcount ;
+int clcount ;
+int posofInOp = 0;
+mat* point ;
+    bool opCheck (short** arr  )
+    {bool mess= false ;
+    for(int k =0 ; k<opcount ;k++ )
+    {
+    mess= true ;
+    for(int i = 0 ; i< n ; i++){
+    for (int j =0 ; j< n ; j++)
+    {
+    if(op[k].arr[i][j] != arr[i][j])
+    { mess = false ;
+    break ; }
+    }
+    if (mess== 0)
+    break ;
+    }
+    if(mess==1)
+    {
+    posofInOp=k ;
+    break ;}
+    }
+    return mess ;
+    }
+
+    bool cloCheck (short ** arr )
+    {
+    bool mess= false  ;
+    for(int k =0 ; k<clcount ;k++ )
+    {
+    mess= true ;
+    for(int i = 0 ; i< n ; i++){
+    for (int j =0 ; j< n ; j++)
+    {
+    if(clo[k].arr[i][j]!=arr[i][j])
+    { mess = 0 ;
+    break ; }
+    }
+    if (mess== 0)
+    break ;
+    }
+    if(mess==1)
+    break ;
+    }
+    return mess ;
+    }
+
+    void addOp(mat* parent ,short ** ar ,  int depth , int fval, char step)
+    {
+    if(!cloCheck(ar)){
+    if(!opCheck(ar)){
+      op[opcount].arr = new short* [n];
+        for (int i = 0; i <n ; i++)
+        {
+            op[opcount].arr[i] = new short [n];
+        }
+    for(int i=0 ; i< n ; i++)
+    for (int j = 0 ; j< n ; j++)
+    {
+
+    op[opcount].arr[i][j] = ar[i][j] ;
+//cout<<"Hi" ;
+    }
+    op[opcount].depth = depth ;
+    op[opcount].fval = fval ;
+    op[opcount].step = step ;
+    op[opcount].parent = parent ;
+    //xcout<<op[opcount].parent<<"Hi2"<<endl ;
+    opcount++ ;
+    }
+    else
+    {
+    op[posofInOp].fval = op[posofInOp].fval>fval?fval : op[posofInOp].fval ;
+    op[posofInOp].depth = op[posofInOp].fval>fval?depth : op[posofInOp].depth ;
+    op[posofInOp].step = op[posofInOp].fval>fval?step : op[posofInOp].step ;
+    op[posofInOp].parent = op[posofInOp].fval>fval? parent : op[posofInOp].parent ;
+    }
+    }
+}
+    void addCl(mat & use )
+    {
+      //cout<<k ;
+    clo[clcount].arr= new short* [n];
+        for (int i = 0; i <n ; i++)
+        {
+            clo[clcount].arr[i] = new short [n];
+        }
+    for(int i=0 ; i< n ; i++)
+        for (int j = 0 ; j< n ; j++)
+    {
+    clo[clcount].arr[i][j] = use.arr[i][j] ;
+    //cout<<"Hi";
+    }
+
+    clo[clcount].parent= use.parent ;
+    clo[clcount].depth = use.depth ;
+    clo[clcount].fval = use.fval ;
+    clo[clcount].step = use.step ;
+    point = &clo[clcount] ;
+    clcount++;
+    }
+
+    void assignMinOp (mat &use)
+    {
+    int pos = 0 ;
+    int min=1000 ;
+    for (int i = 0 ;i < opcount ; i++)
+    {
+    if(op[i].depth != -1 && op[i].fval < min )
+    { pos = i;
+    min= op[i].fval ;
+    }
+    }
+    use = op[pos];
+    addCl(use) ;
+    op[pos].depth = -1 ;
+    }
+
+    void swap (mat  &use )
+    {   //cout<<&use<<"hi"<<endl ;
+        char step ;
+        short ** arr= new short* [n];
+        for (int i = 0; i <n ; i++)
+        {
+            arr[i] = new short [n];
+        };
+       // cout<<"bloop" ;
+        for(int i= 0 ; i< 4 ; i++)
+        {
+            if(possible[i]!= 0)
+            {
+                for(int x= 0 ; x< n ; x++){
+                for(int y =0 ; y<n ; y++)
+                {
+                arr[x][y]= use.arr[x][y] ;
+                }}
+//cout<<"here"<<endl ;
+                int x1 = pos.x-1*(i<2)+ 2*i*(i<2) ;
+                int y1 = pos.y-1*(i>= 2) + 2 * (i%2) *(i>= 2) ;
+                arr[pos.x][pos.y] = arr[x1][y1] ;
+                arr[x1][y1] = 0   ;
+                switch(i)
+                {
+                case 0:
+                step = 'U' ;
+                //cout<<"U" ;
+                break ;
+                case 1:
+                step = 'D' ;
+                //cout<<"D" ;
+                break ;
+                case 2:
+                step = 'L' ;
+               // cout<<"L" ;
+                break ;
+                case 3:
+                step = 'R' ;
+               // cout<<"R" ;
+                break ;
+                }
+              //  cout<<"b" ;
+
+                addOp( point , arr , use.depth+1 , use.depth+1+rank1(arr) ,step) ;//cout<<"acalladdOp" ;
+                }
+        }
+    }
+
+}Col ;
+
+void search0 (short** &arr)
+{
+for(int i=0 ; i<n; i++)
+for(int j =0 ; j< n ; j++)
+if(arr[i][j]==0 )
+{pos.x= i ;
+pos.y = j ;
+break ;
+}
+possible[0] =  (1- (pos.x==0));
+possible[1] =  (1-(pos.x==(n-1)));
+possible[2] =(1- (pos.y==0));
+possible[3] =(1-(pos.y==(n-1)))  ;
+}
+
+
+
+
+bool check (short** &arr)
+{
+  int count = 0;
+  for (int i = 0; i < n*n-1; i++){
+    for (int j = i+1; j < n*n; j++)
+    {
+     if (arr[i/n][i%n]&& arr[j/n][j%n] && arr[i/n][i%n] > arr[j/n][j%n])
+     count++;
+    }
+  }
+
+   //cout<<count ;
+
+  if(n%2!=0)
+  {
+  return ((count% 2== 0)? true : false  ) ;
+   }
+  else
+  {
+  if ((n-pos.x)%2 == 0 )
+  {
+  return (count%2!=0 ? true : false ) ;
+  }else
+  {
+  return ((count% 2== 0)? true : false  );
+  }
+  }
+ }
+
+
+ void Solve (short **arr)
+{
+mat use ( NULL , arr , 0 , 0  ) ;
+
+Col.addCl(use) ;
+while( rank1(use.arr ) != 0 )
+{
+pos.find0(use.arr) ;
+possible[0] =  (1- (pos.x==0));
+possible[1] =  (1-(pos.x==(n-1)));
+possible[2] =(1- (pos.y==0));
+possible[3] =(1-(pos.y==(n-1)))  ;
+//cout<<"Hi2" ;
+Col.swap(use);
+//cout<<"Hi1" ;
+Col.assignMinOp ( use ) ;
+//cout<<use.parent ;
+
+//}
+//cout<<"Hi" ;
+
+
+/*for(int i =0 ; i<n ; i++)
+
+{
+for(int j =0 ; j< n; j++){
+
+cout<<use.arr[i][j] ;}
+cout<<endl ;}
+
+*/
+}
+use = *Col.point ;
+while (use.parent != NULL)
+{
+//cout<<use.step ;
+step1.push_back((int)use.step) ;
+use = *use.parent ;}
+//cout<<Col.clcount<<endl<<Col.opcount;
+}
+
+
+main_program{
+
+
+ cin>>n ;
+short **arr = new short *[n];
+
+for(int i =  0 ;i<n ;i++)
+{arr[i]=new short [n];
+}
+
+for (int i =0 ; i<n ; i++)
+for (int j = 0 ; j<n ; j++)
+{
+cin>>arr[i][j];}
+pos.find0(arr) ;
+if(check(arr))
+{
+Solve(arr) ;
+
+cout<<step1.size()<<endl ;
+for(int i=step1.size();i>0;--i)
+      {
+               cout << (char)step1[i-1] ;
+       }
+       }
+else
+{
+cout<<"-1";
+}
+}
