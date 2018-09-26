@@ -1,0 +1,310 @@
+#include<simplecpp>
+
+struct coord{
+
+    int x,y;
+
+};
+
+struct cage{
+
+    coord c[81];
+
+};
+
+
+
+bool IsSum(int a[9][9],int i,int j,cage*r,int*p,int n, int*q){
+
+    int o=-1; bool found=false;
+
+    for(int m=0;m<n;m++){
+
+        for(int k=0; k<*(p+m);k++){
+
+            if(i==(r+m)->c[k].x && j==(r+m)->c[k].y){
+
+                o=m;
+
+                found=true;
+
+                break;
+
+            }
+
+        }
+
+        if(found) break;
+
+    }
+
+    if(*(p+o)==2){
+
+        for(int t=0;t<8;t++){
+
+            if(*(q+o)==(11+t)){
+
+                if(a[i][j]<(t+2)) return 0;
+
+            }
+
+        }
+
+    }
+
+    if(*(p+o)==3){
+
+        for(int t=0;t<8;t++){
+
+            if(*(q+o)==(20+t)){
+
+                if(a[i][j]<(t+2)) return 0;
+
+            }
+
+        }
+
+    }
+
+    if(a[i][j]>*(q+o))return 0;
+
+    else{
+
+    int u=1;
+
+    for(int h=0;h<*(p+o);h++)
+
+    {
+
+        if(a[((r+o)->c[h].x)][((r+o)->c[h].y)]==0){ u=0; break;}
+
+    }
+
+    if(u==0) return 1;
+
+    else
+
+    {int sum=0;
+
+        for(int d=0;d<*(p+o);d++){
+
+            sum+=a[(r+o)->c[d].x][(r+o)->c[d].y];}
+
+        if(sum==*(q+o)) return 1;
+
+        else return 0;
+
+    }
+
+
+
+    }
+
+}
+
+
+
+
+
+bool IsinCage(int a[9][9],int i, int j,cage*r,int*p,int n){
+
+    int o=-1; bool found=false;
+
+    for(int m=0;m<n;m++){
+
+        for(int k=0; k<*(p+m);k++){
+
+            if(i==((r+m)->c[k].x) && j==((r+m)->c[k].y)){
+
+                o=m;
+
+                found=true;
+
+                break;
+
+            }
+
+        }
+
+        if(found) break;
+
+    }
+
+
+
+    bool yes=true;
+
+    for(int m=0; m<*(p+o);m++){
+
+        if(i!=(r+o)->c[m].x || j!=(r+o)->c[m].y){
+
+            if(a[i][j]==a[(r+o)->c[m].x][(r+o)->c[m].y]){
+
+                yes=false;
+
+                break;
+
+            }
+
+        }
+
+    }
+
+    return yes;
+
+}
+
+
+
+bool IsinNonet(int a[9][9],int i, int j){
+
+    bool found=true;
+
+    for (int m=(i/3)*3;m<((i/3)+1)*3;m++){
+
+        for(int n=(j/3)*3;n<((j/3)+1)*3;n++){
+
+            if(m!=i || n!=j){
+
+                if(a[m][n]==a[i][j]){ found=false; break;}
+
+            }
+
+        }
+
+    }
+
+    return found;
+
+}
+
+bool IsinColumn(int a[9][9],int i, int j){
+
+    bool found=true;
+
+    for(int k=0; k<9;k++){
+
+        if(k!=i){
+
+            if(a[k][j]==a[i][j]) {found=false; break;}
+
+        }
+
+    }
+
+    return found;
+
+}
+
+bool IsinRow(int a[9][9],int i, int j){
+
+    bool found=true;
+
+    for(int k=0; k<9;k++){
+
+        if(k!=j){
+
+            if(a[i][k]==a[i][j]) {found=false; break;}
+
+        }
+
+    }
+
+    return found;
+
+}
+
+
+
+bool isSafe(int a[9][9],int*p,int*q,cage*r,int n,int i,int j){
+
+    if(IsinRow(a,i,j) && IsinColumn(a,i,j) && IsinNonet(a,i,j) && IsinCage(a,i,j,r,p,n) && IsSum(a,i,j,r,p,n,q)) return 1;
+
+    else{a[i][j]=0;return 0;}
+
+}
+
+
+
+bool solver(int a[9][9],int*p,int*q,cage*r,int n,int i,int j){
+
+    for(int num=1;num<=9;num++){
+
+        a[i][j]=num;
+
+        if(isSafe(a,p,q,r,n,i,j)){
+
+            if(j<8){if (solver(a,p,q,r,n,i,j+1)) return true;}
+
+            else if(i<8){ if(solver(a,p,q,r,n,i+1,0)) return true;}
+
+            if(i==8 && j==8){
+
+                for(int w=0;w<9;w++){
+
+                    for(int z=0;z<9;z++){
+
+                        cout<<a[w][z]<<" ";
+
+                    }
+
+                    cout<<endl;
+
+                }
+
+                return true;
+
+            }
+
+            a[i][j]=0;
+
+        }
+
+    }
+
+    return false;
+
+}
+
+
+
+main_program{
+
+
+    int a[9][9]; int n;
+
+    cin>>n;
+
+    int numbers[n],sum[n]; cage b[n];
+
+
+
+    for(int i=0;i<n;i++){
+
+        cin>>numbers[i]>>sum[i];
+
+        for(int j=0;j<numbers[i];j++){
+
+            cin>>b[i].c[j].x>>b[i].c[j].y;
+
+        }
+
+    }
+
+
+
+    for(int i=0;i<9;i++){
+
+        for(int j=0;j<9;j++){a[i][j]=0;}
+
+    }
+
+
+
+    cage*r=b;int*p=numbers;int*q=sum;
+
+    int i=0,j=0;
+
+    solver(a,p,q,r,n,i,j);
+
+    }
